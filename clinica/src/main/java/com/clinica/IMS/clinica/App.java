@@ -1,7 +1,9 @@
 package com.clinica.IMS.clinica;
 
 /**
- * Hello world!
+ * @author Miguel
+ * @author Ivan
+ * @author Samuel
  */
 public class App {
     public static void main(String[] args) {

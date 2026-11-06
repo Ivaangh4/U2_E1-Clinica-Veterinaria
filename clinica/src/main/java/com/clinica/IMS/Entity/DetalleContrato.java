@@ -16,6 +16,7 @@ public class DetalleContrato {
 		this.veterinarioLicencia = veterinarioLicencia;
 	}
 	
+	
 	public int getIdContrato() {
 		return idContrato;
 	}

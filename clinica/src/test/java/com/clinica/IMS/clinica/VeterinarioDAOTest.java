@@ -3,8 +3,13 @@ package com.clinica.IMS.clinica;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Properties;
 
 import com.clinica.IMS.Entity.DetalleContrato;
 import com.clinica.IMS.Entity.Veterinario;
@@ -24,8 +29,33 @@ public class VeterinarioDAOTest {
      * Rigorous Test :-)
      */
 	@BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception{
+		Properties props;
+        InputStream input;
+        String url;
+        String user;
+        String pass;
+
+        props = new Properties();
+        input = getClass().getClassLoader().getResourceAsStream("db.properties");
+        
+        if (input != null) {
+            props.load(input);
+        }
+
+        url = props.getProperty("db.url");
+        user = props.getProperty("db.user");
+        pass = props.getProperty("db.password");
+        
         dao = new VeterinarioDAO();
+        
+        try (Connection conn = DriverManager.getConnection(url, user, pass);
+             Statement stmt = conn.createStatement()) {
+               
+               stmt.executeUpdate("DELETE FROM certificaciones");
+               stmt.executeUpdate("DELETE FROM detalles_contratos");
+               stmt.executeUpdate("DELETE FROM veterinarios");
+        }
     }
     
 	@Test

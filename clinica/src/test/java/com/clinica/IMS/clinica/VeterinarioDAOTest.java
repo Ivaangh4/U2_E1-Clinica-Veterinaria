@@ -8,6 +8,7 @@ import java.sql.Date;
 
 import com.clinica.IMS.Entity.DetalleContrato;
 import com.clinica.IMS.Entity.Veterinario;
+import com.clinica.IMS.Persistence.VeterinarioDAO;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

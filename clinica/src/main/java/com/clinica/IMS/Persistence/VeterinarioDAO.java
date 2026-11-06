@@ -1,4 +1,4 @@
-package com.clinica.IMS.clinica;
+package com.clinica.IMS.Persistence;
 
 import com.clinica.IMS.Entity.DetalleContrato;
 import com.clinica.IMS.Entity.Veterinario;

@@ -129,9 +129,38 @@ public class VeterinarioDAOTest {
 	
 	@Test
     public void testActualizacionYBorrado() {
-		//TODO Acabar metood
+		Veterinario vetOriginal;
+		DetalleContrato contratoOriginal;
+		boolean fueActualizado;
+		DetalleContrato contratoModificado;
+		BigDecimal nuevoSalario = null;
+		boolean fueEliminado;
+		Veterinario vetEliminado;
+		
+		
+		vetOriginal = new Veterinario("VET-004", "Jose", "Hernandez", Date.valueOf("2026-11-06"));
+		contratoOriginal = new DetalleContrato(0, new BigDecimal("2100.00"), 30, "VET-004");
+		
+		dao.insertarVeterinarioConContrato(vetOriginal, contratoOriginal);
+		
+		nuevoSalario = new BigDecimal("2950.00");
+		
+		fueActualizado = dao.actualizarSalarioContrato("VET-004", nuevoSalario);
+		
+		contratoModificado = dao.obtenerContratoPorLicencia("VET-004");
+		
+		assertTrue(fueActualizado);
+        assertNotNull(contratoModificado);
+        assertEquals(0, nuevoSalario.compareTo(contratoModificado.getSalarioBase()));
+        
+        fueEliminado = dao.eliminarVeterinario("VET-004");
+        
+        vetEliminado = dao.obtenerVeterinarioPorLicencia("VET-004");
+        
+        assertTrue(fueEliminado);
+        assertNull(vetEliminado);
        }
-	//efefwef
+
 	
 	
 }

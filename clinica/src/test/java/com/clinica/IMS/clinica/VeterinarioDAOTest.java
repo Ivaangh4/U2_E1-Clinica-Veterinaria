@@ -9,11 +9,14 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Properties;
 
+import com.clinica.IMS.Entity.Certificacion;
 import com.clinica.IMS.Entity.DetalleContrato;
 import com.clinica.IMS.Entity.Veterinario;
 import com.clinica.IMS.Persistence.VeterinarioDAO;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -98,6 +101,36 @@ public class VeterinarioDAOTest {
         assertFalse(fueInsertado);
         assertNull(vetRecuperado, "El veterinario no debe existir en la BD debido al rollback");
     }
+	
+	@Test
+    public void testAltaYRecuperacionCertificaciones() {
+        Veterinario vetOriginal;
+        DetalleContrato contratoOriginal;
+        Certificacion cert1;
+        Certificacion cert2;
+        List<Certificacion> listaCert;
+        boolean certificacionesInsertadas;
+        Veterinario vetRecuperado;
+
+        vetOriginal = new Veterinario("VET-003", "Ana", "Martínez", Date.valueOf("2026-11-06"));
+        contratoOriginal = new DetalleContrato(0, new BigDecimal("2800.00"), 35, "VET-003");
+        dao.insertarVeterinarioConContrato(vetOriginal, contratoOriginal);
+
+        cert1 = new Certificacion(0, "UCM", "Cirugía Felina", "VET-003");
+        cert2 = new Certificacion(0, "UAB", "Dermatología Canina", "VET-003");
+        listaCert = List.of(cert1, cert2);
+
+        certificacionesInsertadas = dao.registrarCertificaciones("VET-003", listaCert);
+        vetRecuperado = dao.obtenerVeterinarioPorLicencia("VET-003");
+
+        assertTrue(certificacionesInsertadas);
+        assertNotNull(vetRecuperado);
+    }
+	
+	@Test
+    public void testActualizacionYBorrado() {
+		//TODO Acabar metood
+       }
 	
 	
 }

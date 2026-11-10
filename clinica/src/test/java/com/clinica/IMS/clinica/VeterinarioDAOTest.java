@@ -81,4 +81,23 @@ public class VeterinarioDAOTest {
         assertNotNull(contratoRecuperado);
         assertEquals(0, salarioEsperado.compareTo(contratoRecuperado.getSalarioBase()));
     }
+	
+	@Test
+    public void testRollbackTransaccional() {
+        Veterinario vetOriginal;
+        DetalleContrato contratoInvalido;
+        boolean fueInsertado;
+        Veterinario vetRecuperado;
+
+        vetOriginal = new Veterinario("VET-002", "Carlos", "Ruiz", Date.valueOf("2026-11-06"));
+        contratoInvalido = new DetalleContrato(0, null, 40, "VET-002");
+
+        fueInsertado = dao.insertarVeterinarioConContrato(vetOriginal, contratoInvalido);
+        vetRecuperado = dao.obtenerVeterinarioPorLicencia("VET-002");
+
+        assertFalse(fueInsertado);
+        assertNull(vetRecuperado, "El veterinario no debe existir en la BD debido al rollback");
+    }
+	
+	
 }

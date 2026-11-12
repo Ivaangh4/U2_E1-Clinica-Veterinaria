@@ -41,5 +41,5 @@ public class DbConfig {
 	public static void reload() throws SQLException {
 		properties.clear();
 		cargarConfiguracion();
-	}
+	} //FSDFDSF
 }

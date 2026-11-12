@@ -51,6 +51,6 @@ public class ConnectionFactory {
 
 		if (!dataSource.isClosed()) {
 			dataSource.close();
-		}
+		} //fSDF
 	}
 }

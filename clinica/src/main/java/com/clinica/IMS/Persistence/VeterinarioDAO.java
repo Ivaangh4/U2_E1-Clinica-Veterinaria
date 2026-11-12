@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -39,7 +40,28 @@ public class VeterinarioDAO {
 	}
 
 	public boolean insertarVeterinarioConContrato(Veterinario vetOriginal, DetalleContrato contratoOriginal) {
-		// TODO Auto-generated method stub
+		try {
+			connection.setAutoCommit(false);
+			
+			psInsertVet.setString(1, vetOriginal.getNumLicencia());
+			psInsertVet.setString(2, vetOriginal.getNombre());
+			psInsertVet.setString(3, vetOriginal.getApellidos());
+			psInsertVet.setDate(4, vetOriginal.getFechaContratacion());
+			
+			if(psInsertVet.executeUpdate() > 0) {
+				connection.commit();
+				logger.info("Veterinario insertado correctamente");
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			try {
+	            connection.rollback();
+	        } catch (SQLException ex) {
+	            logger.error("Error al realizar rollback", ex);
+	        }
+			logger.error("Error al insertar veterinario",e);
+		}
 		return false;
 	}
 

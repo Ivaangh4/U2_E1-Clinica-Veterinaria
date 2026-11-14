@@ -33,6 +33,36 @@ public class CertificacionService {
 
 		return certificacionDAO.insertarCertificacion(certificacion);
 	}
+	
+	public boolean insertarCertificaciones(String licencia, List<Certificacion> certificaciones) {
+
+		if (licencia == null || licencia.isBlank()) {
+			return false;
+		}
+
+		if (certificaciones == null || certificaciones.isEmpty()) {
+			return false;
+		}
+
+		boolean todasInsertadas = true;
+
+		for (Certificacion certificacion : certificaciones) {
+
+			if (certificacion == null) {
+				todasInsertadas = false;
+				continue;
+			}
+
+			// Todas las certificaciones se asocian a la licencia indicada
+			certificacion.setLicenciaVeterinario(licencia);
+
+			if (!certificacionDAO.insertarCertificacion(certificacion)) {
+				todasInsertadas = false;
+			}
+		}
+
+		return todasInsertadas;
+	}
 
 	public Certificacion obtenerCertificacionPorId(int id) {
 

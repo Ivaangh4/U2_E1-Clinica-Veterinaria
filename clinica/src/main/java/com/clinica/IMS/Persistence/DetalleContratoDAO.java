@@ -1,8 +1,10 @@
 package com.clinica.IMS.Persistence;
 
 import com.clinica.IMS.Entity.DetalleContrato;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,202 +14,199 @@ import java.sql.Statement;
 
 /**
  * @author Samuel
- * Capa encargada de hacer todas las operaciones Crud
+ * Capa encargada de hacer todas las operaciones CRUD
  */
 public class DetalleContratoDAO {
 
-	private static final Logger logger = LogManager.getLogger(DetalleContratoDAO.class);
+    private static final Logger logger =
+            LogManager.getLogger(DetalleContratoDAO.class);
 
-	private static Connection connection;
-	private static PreparedStatement psInsert;
-	private static PreparedStatement psGetById;
-	private static PreparedStatement psGetByLicence;
-	private static PreparedStatement psUpdate;
-	private static PreparedStatement psUpdateSalario;
-	private static PreparedStatement psDelete;
+    private static final String SQL_INSERT =
+            "INSERT INTO detalles_contratos "
+            + "(salario_base, horario_semanal, veterinario_licencia) "
+            + "VALUES (?, ?, ?)";
 
-	static {
-		try {
-			connection = ConnectionFactory.getConnection();
-			psInsert = connection.prepareStatement("INSERT INTO detalles_contratos "
-					+ "(salario_base, horario_semanal, veterinario_licencia) " + "VALUES (?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			psGetById = connection.prepareStatement("SELECT id, salario_base, horario_semanal, "
-					+ "veterinario_licencia FROM detalles_contratos WHERE id = ?");
-			psGetByLicence = connection.prepareStatement("SELECT id, salario_base, horario_semanal, "
-					+ "veterinario_licencia FROM detalles_contratos WHERE veterinario_licencia = ?");
-			psUpdate = connection.prepareStatement("UPDATE detalles_contratos SET salario_base = ?, "
-					+ "horario_semanal = ? WHERE id = ?");
-			psUpdateSalario = connection.prepareStatement("UPDATE detalles_contratos SET salario_base = ? "
-					+ "WHERE veterinario_licencia = ?");
-			psDelete = connection.prepareStatement("DELETE FROM detalles_contratos WHERE id = ?");
-		} catch (SQLException e) {
-			logger.error("Error al obtener la conexión para los detalles de contrato", e);
-		}
-	}
+    private static final String SQL_GET_BY_ID =
+            "SELECT id, salario_base, horario_semanal, "
+            + "veterinario_licencia FROM detalles_contratos WHERE id = ?";
 
-	public DetalleContratoDAO() {
-	}
+    private static final String SQL_GET_BY_LICENCE =
+            "SELECT id, salario_base, horario_semanal, "
+            + "veterinario_licencia FROM detalles_contratos "
+            + "WHERE veterinario_licencia = ?";
 
-	public boolean insertarContrato(DetalleContrato contrato) {
-		boolean insertado = false;
-		try {
-			connection.setAutoCommit(false);
+    private static final String SQL_UPDATE =
+            "UPDATE detalles_contratos SET salario_base = ?, "
+            + "horario_semanal = ? WHERE id = ?";
 
-			psInsert.setBigDecimal(1, contrato.getSalarioBase());
-			psInsert.setInt(2, contrato.getHorarioSemanal());
-			psInsert.setString(3, contrato.getVeterinarioLicencia());
+    private static final String SQL_UPDATE_SALARIO =
+            "UPDATE detalles_contratos SET salario_base = ? "
+            + "WHERE veterinario_licencia = ?";
 
-			if (psInsert.executeUpdate() > 0) {
-				try (ResultSet rs = psInsert.getGeneratedKeys()) {
-					if (rs.next()) {
-						contrato.setIdContrato(rs.getInt(1));
-					}
-				}
-				connection.commit();
-				logger.info("Contrato insertado correctamente");
-				insertado = true;
-			}
+    private static final String SQL_DELETE =
+            "DELETE FROM detalles_contratos WHERE id = ?";
 
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException ex) {
-				logger.error("Error al realizar rollback en la inserción de contrato", ex);
-			}
-			logger.error("Error al insertar contrato", e);
-		}
-		return insertado;
-	}
+    public DetalleContratoDAO() {
+    }
 
-	public DetalleContrato obtenerContratoPorId(int id) {
-		DetalleContrato contrato = null;
+    public boolean insertarContrato(DetalleContrato contrato) {
 
-		try {
-			psGetById.setInt(1, id);
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(
+                     SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
 
-			try (ResultSet rs = psGetById.executeQuery()) {
-				if (rs.next()) {
-					contrato = new DetalleContrato(
-							rs.getInt("id"),
-							rs.getBigDecimal("salario_base"),
-							rs.getInt("horario_semanal"),
-							rs.getString("veterinario_licencia"));
-					logger.info("Contrato encontrado");
-				} else {
-					logger.warn("Contrato no encontrado");
-				}
-			}
-		} catch (SQLException e) {
-			logger.error("Error al obtener contrato", e);
-		}
-		return contrato;
-	}
+            ps.setBigDecimal(1, contrato.getSalarioBase());
+            ps.setInt(2, contrato.getHorarioSemanal());
+            ps.setString(3, contrato.getVeterinarioLicencia());
 
-	public DetalleContrato obtenerContratoPorLicencia(String licencia) {
-		DetalleContrato contrato = null;
+            if (ps.executeUpdate() > 0) {
 
-		try {
-			psGetByLicence.setString(1, licencia);
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        contrato.setIdContrato(rs.getInt(1));
+                    }
+                }
 
-			try (ResultSet rs = psGetByLicence.executeQuery()) {
-				if (rs.next()) {
-					contrato = new DetalleContrato(
-							rs.getInt("id"),
-							rs.getBigDecimal("salario_base"),
-							rs.getInt("horario_semanal"),
-							rs.getString("veterinario_licencia"));
-					logger.info("Contrato encontrado");
-				} else {
-					logger.warn("Contrato no encontrado para la licencia: {}", licencia);
-				}
-			}
-		} catch (SQLException e) {
-			logger.error("Error al obtener contrato por licencia", e);
-		}
-		return contrato;
-	}
+                logger.info("Contrato insertado correctamente");
+                return true;
+            }
 
-	public boolean actualizarContrato(DetalleContrato contrato) {
-		boolean actualizado = false;
+        } catch (SQLException e) {
+            logger.error("Error al insertar contrato", e);
+        }
 
-		try {
-			connection.setAutoCommit(false);
-			psUpdate.setBigDecimal(1, contrato.getSalarioBase());
-			psUpdate.setInt(2, contrato.getHorarioSemanal());
-			psUpdate.setInt(3, contrato.getIdContrato());
+        return false;
+    }
 
-			if (psUpdate.executeUpdate() > 0) {
-				connection.commit();
-				logger.info("Contrato actualizado correctamente");
-				actualizado = true;
-			} else {
-				connection.rollback();
-				logger.warn("No se encontró el contrato con id: {}", contrato.getIdContrato());
-			}
+    public DetalleContrato obtenerContratoPorId(int id) {
 
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException ex) {
-				logger.error("Error al realizar rollback en la actualización de contrato", ex);
-			}
-			logger.error("Error al actualizar contrato", e);
-		}
-		return actualizado;
-	}
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_GET_BY_ID)) {
 
-	public boolean actualizarSalario(String licencia, BigDecimal nuevoSalario) {
-		boolean actualizado = false;
+            ps.setInt(1, id);
 
-		try {
-			connection.setAutoCommit(false);
-			psUpdateSalario.setBigDecimal(1, nuevoSalario);
-			psUpdateSalario.setString(2, licencia);
+            try (ResultSet rs = ps.executeQuery()) {
 
-			if (psUpdateSalario.executeUpdate() > 0) {
-				connection.commit();
-				logger.info("Salario actualizado correctamente");
-				actualizado = true;
-			} else {
-				connection.rollback();
-				logger.warn("No se encontró contrato para la licencia: {}", licencia);
-			}
+                if (rs.next()) {
 
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException ex) {
-				logger.error("Error al realizar rollback en la actualización de salario", ex);
-			}
-			logger.error("Error al actualizar salario", e);
-		}
-		return actualizado;
-	}
+                    logger.info("Contrato encontrado");
 
-	public boolean eliminarContrato(int id) {
-		boolean borrado = false;
+                    return new DetalleContrato(
+                            rs.getInt("id"),
+                            rs.getBigDecimal("salario_base"),
+                            rs.getInt("horario_semanal"),
+                            rs.getString("veterinario_licencia")
+                    );
+                }
+            }
 
-		try {
-			connection.setAutoCommit(false);
-			psDelete.setInt(1, id);
+            logger.warn("Contrato no encontrado");
 
-			if (psDelete.executeUpdate() > 0) {
-				connection.commit();
-				logger.info("Contrato borrado correctamente");
-				borrado = true;
-			} else {
-				connection.rollback();
-				logger.warn("No se encontró el contrato con id: {}", id);
-			}
-		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (SQLException ex) {
-				logger.error("Error al realizar rollback en el borrado de contrato", ex);
-			}
-			logger.error("Error al borrar contrato", e);
-		}
-		return borrado;
-	}
+        } catch (SQLException e) {
+            logger.error("Error al obtener contrato", e);
+        }
+
+        return null;
+    }
+
+    public DetalleContrato obtenerContratoPorLicencia(String licencia) {
+
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_GET_BY_LICENCE)) {
+
+            ps.setString(1, licencia);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+
+                    logger.info("Contrato encontrado");
+
+                    return new DetalleContrato(
+                            rs.getInt("id"),
+                            rs.getBigDecimal("salario_base"),
+                            rs.getInt("horario_semanal"),
+                            rs.getString("veterinario_licencia")
+                    );
+                }
+            }
+
+            logger.warn("Contrato no encontrado para la licencia: {}", licencia);
+
+        } catch (SQLException e) {
+            logger.error("Error al obtener contrato por licencia", e);
+        }
+
+        return null;
+    }
+
+    public boolean actualizarContrato(DetalleContrato contrato) {
+
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_UPDATE)) {
+
+            ps.setBigDecimal(1, contrato.getSalarioBase());
+            ps.setInt(2, contrato.getHorarioSemanal());
+            ps.setInt(3, contrato.getIdContrato());
+
+            if (ps.executeUpdate() > 0) {
+
+                logger.info("Contrato actualizado correctamente");
+                return true;
+            }
+
+            logger.warn("No se encontró el contrato con id: {}",
+                    contrato.getIdContrato());
+
+        } catch (SQLException e) {
+            logger.error("Error al actualizar contrato", e);
+        }
+
+        return false;
+    }
+
+    public boolean actualizarSalario(String licencia, BigDecimal nuevoSalario) {
+
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_UPDATE_SALARIO)) {
+
+            ps.setBigDecimal(1, nuevoSalario);
+            ps.setString(2, licencia);
+
+            if (ps.executeUpdate() > 0) {
+
+                logger.info("Salario actualizado correctamente");
+                return true;
+            }
+
+            logger.warn("No se encontró contrato para la licencia: {}", licencia);
+
+        } catch (SQLException e) {
+            logger.error("Error al actualizar salario", e);
+        }
+
+        return false;
+    }
+
+    public boolean eliminarContrato(int id) {
+
+        try (Connection connection = ConnectionFactory.getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_DELETE)) {
+
+            ps.setInt(1, id);
+
+            if (ps.executeUpdate() > 0) {
+
+                logger.info("Contrato borrado correctamente");
+                return true;
+            }
+
+            logger.warn("No se encontró el contrato con id: {}", id);
+
+        } catch (SQLException e) {
+            logger.error("Error al borrar contrato", e);
+        }
+
+        return false;
+    }
 }

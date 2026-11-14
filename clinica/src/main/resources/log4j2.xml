@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
+
     <Appenders>
-        
-        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+
+        <File name="FileAppender"
+              fileName="logs/clinica.log"
+              append="true">
+
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
-        </Console>
+
+        </File>
+
     </Appenders>
 
     <Loggers>
-      
+
         <Logger name="com.clinica.IMS.clinica" level="DEBUG" additivity="false">
-            <AppenderRef ref="ConsoleAppender"/>
+
+            <AppenderRef ref="FileAppender"/>
+
         </Logger>
 
         <Root level="INFO">
-            <AppenderRef ref="ConsoleAppender"/>
+
+            <AppenderRef ref="FileAppender"/>
+
         </Root>
+
     </Loggers>
+
 </Configuration>

@@ -55,7 +55,6 @@ public class DetalleContratoDAO {
 			psInsert.setString(3, contrato.getVeterinarioLicencia());
 
 			if (psInsert.executeUpdate() > 0) {
-				// Recuperamos el id autogenerado y lo guardamos en el objeto
 				try (ResultSet rs = psInsert.getGeneratedKeys()) {
 					if (rs.next()) {
 						contrato.setIdContrato(rs.getInt(1));

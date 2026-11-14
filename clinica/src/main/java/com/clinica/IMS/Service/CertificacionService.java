@@ -53,7 +53,6 @@ public class CertificacionService {
 				continue;
 			}
 
-			// Todas las certificaciones se asocian a la licencia indicada
 			certificacion.setLicenciaVeterinario(licencia);
 
 			if (!certificacionDAO.insertarCertificacion(certificacion)) {

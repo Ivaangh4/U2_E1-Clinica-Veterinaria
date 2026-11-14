@@ -1,5 +1,9 @@
 package com.clinica.IMS.Entity;
 
+/**
+ * @author Miguel Ángel
+ */
+
 public class Certificacion {
 	private int idCertificacion;
 	private String entidadEmisora;

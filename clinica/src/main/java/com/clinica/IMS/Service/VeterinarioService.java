@@ -2,7 +2,10 @@ package com.clinica.IMS.Service;
 
 import com.clinica.IMS.Entity.Veterinario;
 import com.clinica.IMS.Persistence.VeterinarioDAO;
-
+/**
+ * @author Miguel Ángel
+ * Clase donde se implementan todos los metodos Crud de Veterinario
+ */
 public class VeterinarioService {
 	private final VeterinarioDAO veterinarioDAO;
 

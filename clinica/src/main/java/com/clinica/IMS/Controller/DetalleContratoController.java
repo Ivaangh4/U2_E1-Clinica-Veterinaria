@@ -4,7 +4,10 @@ import java.math.BigDecimal;
 
 import com.clinica.IMS.Entity.DetalleContrato;
 import com.clinica.IMS.Service.DetalleContratoService;
-
+/**
+ * @author Miguel Ángel
+ * Implementación métodos DetalleContratoService
+ */
 public class DetalleContratoController {
 	private final DetalleContratoService detalleContratoService;
 

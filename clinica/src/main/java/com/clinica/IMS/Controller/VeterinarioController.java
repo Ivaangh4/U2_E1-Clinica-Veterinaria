@@ -2,7 +2,10 @@ package com.clinica.IMS.Controller;
 
 import com.clinica.IMS.Entity.Veterinario;
 import com.clinica.IMS.Service.VeterinarioService;
-
+/**
+ * @author Miguel Ángel
+ * Implementación métodos VeteinarioService
+ */
 public class VeterinarioController {
 	private final VeterinarioService veterinarioService;
 

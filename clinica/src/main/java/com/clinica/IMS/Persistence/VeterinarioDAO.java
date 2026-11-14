@@ -95,21 +95,6 @@ public class VeterinarioDAO {
 		return veterinario;
 	}
 
-	public DetalleContrato obtenerContratoPorLicencia(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean registrarCertificaciones(String licencia, List<Certificacion> certificaciones) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean actualizarSalarioContrato(String licencia, BigDecimal nuevoSalario) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public boolean eliminarVeterinario(String licencia) {
 		boolean borrado = false;
 		try {

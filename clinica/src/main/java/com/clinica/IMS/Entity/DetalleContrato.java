@@ -43,9 +43,4 @@ public class DetalleContrato {
 	public void setVeterinarioLicencia(String veterinarioLicencia) {
 		this.veterinarioLicencia = veterinarioLicencia;
 	}
-	
-	
-	
-	
-	
 }

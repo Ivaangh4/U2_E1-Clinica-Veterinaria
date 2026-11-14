@@ -49,8 +49,4 @@ public class Veterinario {
 	public void setFechaContratacion(Date fechaContratacion) {
 		this.fechaContratacion = fechaContratacion;
 	}
-	
-	
-	
-	
 }

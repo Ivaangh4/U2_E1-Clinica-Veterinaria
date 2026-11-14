@@ -49,8 +49,4 @@ public class Certificacion {
 	public void setLicenciaVeterinario(String licenciaVeterinario) {
 		this.licenciaVeterinario = licenciaVeterinario;
 	}
-	
-	
-	
-	
 }

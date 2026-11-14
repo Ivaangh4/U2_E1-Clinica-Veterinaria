@@ -42,7 +42,6 @@ public class VeterinarioDAO {
 	}
 
 	public VeterinarioDAO() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public boolean insertarVeterinario(Veterinario vetOriginal) {
@@ -73,7 +72,6 @@ public class VeterinarioDAO {
 	}
 
 	public Veterinario obtenerVeterinarioPorLicencia(String licencia) {
-		// TODO Auto-generated method stub
 		Veterinario veterinario = null;
 		
 		try {
@@ -151,7 +149,5 @@ public class VeterinarioDAO {
 			logger.error("Error al actualizar veterinario",e);
 		}
 		return actualizado;
-		
 	}
-	
 }

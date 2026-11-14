@@ -1,55 +1,66 @@
-CREATE TABLE veterinarios.veterinarios (
+
+CREATE DATABASE IF NOT EXISTS veterinarios;
+
+USE veterinarios;
+
+
+DROP TABLE IF EXISTS certificaciones;
+DROP TABLE IF EXISTS detalles_contratos;
+DROP TABLE IF EXISTS veterinarios;
+
+
+CREATE TABLE veterinarios (
     num_licencia VARCHAR(20) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     apellidos VARCHAR(150) NOT NULL,
     fecha_contratacion DATE NOT NULL,
 
-    CONSTRAINT veterinarios_pk
-        PRIMARY KEY (num_licencia)
+    PRIMARY KEY (num_licencia)
 
-)
-ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-CREATE TABLE veterinarios.detalles_contratos (
-    id INT AUTO_INCREMENT NOT NULL,
+CREATE TABLE detalles_contratos (
+    id INT NOT NULL AUTO_INCREMENT,
     salario_base DECIMAL(10,2) NOT NULL,
     horario_semanal INT NOT NULL,
     veterinario_licencia VARCHAR(20) NOT NULL,
 
-    CONSTRAINT detalles_contratos_pk
-        PRIMARY KEY (id),
+    PRIMARY KEY (id),
+    UNIQUE (veterinario_licencia)
 
-    CONSTRAINT detalles_contratos_unique
-        UNIQUE (veterinario_licencia),
-
-    CONSTRAINT detalles_contratos_veterinario_fk
-        FOREIGN KEY (veterinario_licencia)
-        REFERENCES veterinarios.veterinarios(num_licencia)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-
-)
-ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-CREATE TABLE veterinarios.certificaciones (
+CREATE TABLE certificaciones (
     institucion_emisora VARCHAR(150) NOT NULL,
     nombre_especialidad VARCHAR(150) NOT NULL,
     veterinario_licencia VARCHAR(20) NOT NULL,
-    id INT AUTO_INCREMENT NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,
 
-    CONSTRAINT certificaciones_pk
-        PRIMARY KEY (id),
+    PRIMARY KEY (id)
 
-    CONSTRAINT certificaciones_veterinario_fk
-        FOREIGN KEY (veterinario_licencia)
-        REFERENCES veterinarios.veterinarios(num_licencia)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-)
-ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE detalles_contratos
+ADD CONSTRAINT detalles_contratos_veterinario_fk
+FOREIGN KEY (veterinario_licencia)
+REFERENCES veterinarios (num_licencia)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+
+ALTER TABLE certificaciones
+ADD CONSTRAINT certificaciones_veterinario_fk
+FOREIGN KEY (veterinario_licencia)
+REFERENCES veterinarios (num_licencia)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+
+SHOW TABLES;
+
+SHOW CREATE TABLE detalles_contratos;
+
+SHOW CREATE TABLE certificaciones;

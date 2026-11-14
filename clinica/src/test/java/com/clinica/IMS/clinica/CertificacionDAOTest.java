@@ -30,12 +30,6 @@ public class CertificacionDAOTest {
 	private CertificacionDAO dao;
 	private VeterinarioDAO vetDao;
 
-	/**
-	 * Restaura un estado limpio en la base de datos e instancia los DAOs
-	 * antes de cada caso de prueba.
-	 * 
-	 * @throws Exception si ocurre algún problema al leer {@code db.properties} o ejecutar el borrado inicial.
-	 */
 	@BeforeEach
 	public void setUp() throws Exception {
 		Properties props;
@@ -67,10 +61,6 @@ public class CertificacionDAOTest {
 		}
 	}
 
-	/**
-	 * Verifica la inserción de una certificación asociada a un veterinario
-	 * y su recuperación exacta mediante el ID autogenerado.
-	 */
 	@Test
 	public void testInsertarCertificacionExitoso() {
 		Veterinario vetOriginal;
@@ -91,10 +81,6 @@ public class CertificacionDAOTest {
 		assertEquals("Cirugía Felina", certRecuperada.getNombreEsp());
 	}
 
-	/**
-	 * Comprueba que al intentar insertar una certificación con especialidad nula,
-	 * se ejecuta el rollback correspondiente y no se guarda ningún registro.
-	 */
 	@Test
 	public void testRollbackTransaccional() {
 		Veterinario vetOriginal;
@@ -113,10 +99,7 @@ public class CertificacionDAOTest {
 		assertTrue(listaRecuperada.isEmpty(), "La certificación no debe existir en la BD debido al rollback");
 	}
 
-	/**
-	 * Valida el alta de varias certificaciones para un mismo veterinario
-	 * y su recuperación conjunta filtrando por número de licencia.
-	 */
+
 	@Test
 	public void testAltaYRecuperacionCertificaciones() {
 		Veterinario vetOriginal;
@@ -142,10 +125,6 @@ public class CertificacionDAOTest {
 		assertEquals(2, listaRecuperada.size());
 	}
 
-	/**
-	 * Verifica la modificación de la institución emisora y especialidad de una certificación,
-	 * así como su eliminación definitiva por identificador.
-	 */
 	@Test
 	public void testActualizacionYBorrado() {
 		Veterinario vetOriginal;

@@ -30,12 +30,6 @@ public class DetalleContratoDAOTest {
 	private DetalleContratoDAO dao;
 	private VeterinarioDAO vetDao;
 
-	/**
-	 * Limpia las tablas de la base de datos e inicializa los DAOs necesarios
-	 * antes de ejecutar cada método de prueba.
-	 * 
-	 * @throws Exception si falla la lectura de {@code db.properties} o la conexión SQL.
-	 */
 	@BeforeEach
 	public void setUp() throws Exception {
 		Properties props;
@@ -67,10 +61,7 @@ public class DetalleContratoDAOTest {
 		}
 	}
 
-	/**
-	 * Comprueba la inserción exitosa de un contrato asociado a un veterinario
-	 * y su posterior consulta tanto por licencia como por identificador generado.
-	 */
+
 	@Test
 	public void testInsertarContratoExitoso() {
 		Veterinario vetOriginal;
@@ -96,10 +87,7 @@ public class DetalleContratoDAOTest {
 		assertEquals(40, contratoPorLicencia.getHorarioSemanal());
 	}
 
-	/**
-	 * Verifica que al intentar insertar un contrato con salario nulo (violando NOT NULL),
-	 * la operación falla y realiza rollback sin dejar registros huérfanos.
-	 */
+
 	@Test
 	public void testRollbackTransaccional() {
 		Veterinario vetOriginal;
@@ -118,10 +106,6 @@ public class DetalleContratoDAOTest {
 		assertNull(contratoRecuperado, "El contrato no debe existir en la BD debido al rollback");
 	}
 
-	/**
-	 * Valida la restricción UNIQUE sobre la licencia del veterinario impidiendo contratos duplicados,
-	 * así como la actualización directa del salario mediante el número de licencia.
-	 */
 	@Test
 	public void testActualizarSalarioYRestriccionUnique() {
 		Veterinario vetOriginal;
@@ -150,10 +134,7 @@ public class DetalleContratoDAOTest {
 		assertEquals(0, nuevoSalario.compareTo(contratoRecuperado.getSalarioBase()));
 	}
 
-	/**
-	 * Comprueba la actualización completa de salario y horario semanal de un contrato,
-	 * seguida de su eliminación por identificador y verificación de borrado.
-	 */
+
 	@Test
 	public void testActualizacionYBorrado() {
 		Veterinario vetOriginal;

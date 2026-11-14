@@ -5,6 +5,10 @@ import java.math.BigDecimal;
 import com.clinica.IMS.Entity.DetalleContrato;
 import com.clinica.IMS.Persistence.DetalleContratoDAO;
 
+/**
+ * @author Samuel
+ * Clase donde se implementan todos los metodos Crud de DetalleContrato
+ */
 public class DetalleContratoService {
 	private final DetalleContratoDAO detalleContratoDAO;
 

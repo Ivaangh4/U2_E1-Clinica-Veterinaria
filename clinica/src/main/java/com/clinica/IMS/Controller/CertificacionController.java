@@ -5,6 +5,11 @@ import java.util.List;
 import com.clinica.IMS.Entity.Certificacion;
 import com.clinica.IMS.Service.CertificacionService;
 
+/**
+ * @author Samuel
+ * Implementacion de los metodos de CertificacionService
+ */
+
 public class CertificacionController {
 	private final CertificacionService certificacionService;
 

@@ -10,6 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * @author Samuel
+ * Capa encargada de hacer todas las operaciones Crud
+ */
 public class DetalleContratoDAO {
 
 	private static final Logger logger = LogManager.getLogger(DetalleContratoDAO.class);

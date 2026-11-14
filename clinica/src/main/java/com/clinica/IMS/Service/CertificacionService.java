@@ -6,6 +6,10 @@ import java.util.List;
 import com.clinica.IMS.Entity.Certificacion;
 import com.clinica.IMS.Persistence.CertificacionDAO;
 
+/**
+ * @author Samuel
+ * Clase donde se implementan todos los metodos Crud de Certificacion
+ */
 public class CertificacionService {
 	private final CertificacionDAO certificacionDAO;
 

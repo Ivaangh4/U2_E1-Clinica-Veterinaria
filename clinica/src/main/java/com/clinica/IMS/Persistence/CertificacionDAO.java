@@ -11,6 +11,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Samuel
+ * Capa encargada de hacer todas las operaciones Crud
+ */
 public class CertificacionDAO {
 
 	private static final Logger logger = LogManager.getLogger(CertificacionDAO.class);

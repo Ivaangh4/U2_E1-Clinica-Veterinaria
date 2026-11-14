@@ -53,7 +53,6 @@ public class CertificacionDAO {
 			psInsert.setString(3, certificacion.getLicenciaVeterinario());
 
 			if (psInsert.executeUpdate() > 0) {
-				// Recuperamos el id autogenerado y lo guardamos en el objeto
 				try (ResultSet rs = psInsert.getGeneratedKeys()) {
 					if (rs.next()) {
 						certificacion.setIdCertificacion(rs.getInt(1));

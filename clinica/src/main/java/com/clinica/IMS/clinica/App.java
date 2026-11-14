@@ -19,12 +19,10 @@ import com.clinica.IMS.Persistence.DetalleContratoDAO;
 import com.clinica.IMS.Persistence.VeterinarioDAO;
 
 /**
- * Programa demostrador: guion secuencial (sin menús ni Scanner).
- * Todo se muestra a través de Log4j2.
- *
  * @author Miguel
  * @author Ivan
  * @author Samuel
+ * 
  */
 public class App {
 

@@ -21,6 +21,7 @@ public class VeterinarioDAO {
 	private static PreparedStatement psInsertVet;
 	private static PreparedStatement psGetByLicence;
 	private static PreparedStatement psDelete;
+	private static PreparedStatement psUpdate;
 	
 	static {
 		try {
@@ -30,6 +31,8 @@ public class VeterinarioDAO {
 			psGetByLicence = connection.prepareStatement("SELECT num_licencia, nombre, apellidos, fecha_contratacion "
 					+ "FROM veterinarios WHERE num_licencia = (?)");
 			psDelete = connection.prepareStatement("DELETE FROM veterinarios WHERE num_licencia = (?)");
+			psUpdate = connection.prepareStatement("UPDATE veterinarios SET nombre = ?, apellidos = ?,"
+					+ " fecha_contratacion = ? WHERE num_licencia = ?");
 		} catch (SQLException e) {
 			logger.error("Error al obtener la conexión para insertar el veterinario",e);
 		}
@@ -40,6 +43,7 @@ public class VeterinarioDAO {
 	}
 
 	public boolean insertarVeterinarioConContrato(Veterinario vetOriginal, DetalleContrato contratoOriginal) {
+		boolean insertado = false;
 		try {
 			connection.setAutoCommit(false);
 			
@@ -51,7 +55,7 @@ public class VeterinarioDAO {
 			if(psInsertVet.executeUpdate() > 0) {
 				connection.commit();
 				logger.info("Veterinario insertado correctamente");
-				return true;
+				insertado =  true;
 			}
 			
 		} catch (SQLException e) {
@@ -62,7 +66,7 @@ public class VeterinarioDAO {
 	        }
 			logger.error("Error al insertar veterinario",e);
 		}
-		return false;
+		return insertado;
 	}
 
 	public Veterinario obtenerVeterinarioPorLicencia(String string) {
@@ -86,8 +90,59 @@ public class VeterinarioDAO {
 	}
 
 	public boolean eliminarVeterinario(String licencia) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean borrado = false;
+		try {
+			connection.setAutoCommit(false);
+			psDelete.setString(1, licencia);
+			
+			if(psDelete.executeUpdate() > 0) {
+				connection.commit();
+				logger.info("Veterinario borrado correctamente");
+				borrado =  true;
+			}
+		}catch(SQLException e) {
+			try {
+	            connection.rollback();
+	        } catch (SQLException ex) {
+	            logger.error("Error al realizar rollback en el borrado", ex);
+	        }
+			logger.error("Error al borrar veterinario",e);
+		}
+		return borrado;
 	}
+	
+	public boolean actualizarVeterinario(Veterinario veterinario) {
+		boolean actualizado = false;
+		
+		try {
+			connection.setAutoCommit(false);
+			psUpdate.setString(1, veterinario.getNombre());
+			psUpdate.setString(2, veterinario.getApellidos());
+			psUpdate.setDate(3, veterinario.getFechaContratacion());
+			psUpdate.setString(4, veterinario.getNumLicencia());
+			
+			if(psUpdate.executeUpdate() > 0) {
+				connection.commit();
+				logger.info("Veterinario actualizado correctamente");
+				actualizado = true;
+			} else {
 
+	            connection.rollback();
+
+	            logger.warn("No se encontró el veterinario con licencia: {}",
+	                    veterinario.getNumLicencia());
+	        }
+			
+		}catch(SQLException e) {
+			try {
+	            connection.rollback();
+	        } catch (SQLException ex) {
+	            logger.error("Error al realizar rollback en el actualizado", ex);
+	        }
+			logger.error("Error al actualizar veterinario",e);
+		}
+		return actualizado;
+		
+	}
+	
 }

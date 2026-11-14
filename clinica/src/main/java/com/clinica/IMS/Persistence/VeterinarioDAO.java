@@ -69,9 +69,30 @@ public class VeterinarioDAO {
 		return insertado;
 	}
 
-	public Veterinario obtenerVeterinarioPorLicencia(String string) {
+	public Veterinario obtenerVeterinarioPorLicencia(String licencia) {
 		// TODO Auto-generated method stub
-		return null;
+		Veterinario veterinario = null;
+		
+		try {
+			psGetByLicence.setString(1, licencia);
+			
+			try (ResultSet rs = psGetByLicence.executeQuery()) {
+	            if (rs.next()) {
+	                veterinario = new Veterinario(
+	                    rs.getString("num_licencia"),
+	                    rs.getString("nombre"),
+	                    rs.getString("apellidos"),
+	                    rs.getDate("fecha_contratacion")
+	                );
+	                logger.info("Veterinario encontrado");
+	            } else {
+	                logger.warn("Veterinario no encontrado");
+	            }
+	        }
+		}catch(SQLException e) {
+			logger.error("Error al obtener veterinario",e);
+		}
+		return veterinario;
 	}
 
 	public DetalleContrato obtenerContratoPorLicencia(String string) {

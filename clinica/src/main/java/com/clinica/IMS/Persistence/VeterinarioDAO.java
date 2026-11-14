@@ -12,7 +12,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.clinica.IMS.Entity.Certificacion;
-
+/**
+ * @author Miguel Ángel
+ * Capa encargada de hacer todas las operaciones Crud
+ */
 public class VeterinarioDAO {
 
 	private static final Logger logger = LogManager.getLogger(VeterinarioDAO.class);

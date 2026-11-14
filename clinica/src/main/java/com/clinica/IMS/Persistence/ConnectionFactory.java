@@ -6,7 +6,10 @@ import java.util.Properties;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
+/**
+ * @author Miguel Ángel
+ * 
+ */
 public class ConnectionFactory {
 	private static final HikariDataSource dataSource;
 

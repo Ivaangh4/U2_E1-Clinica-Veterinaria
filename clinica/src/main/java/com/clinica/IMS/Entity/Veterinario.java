@@ -1,7 +1,9 @@
 package com.clinica.IMS.Entity;
 
 import java.sql.Date;
-
+/**
+ * @author Miguel Ángel
+ */
 public class Veterinario {
 	private String numLicencia;
 	private String nombre;

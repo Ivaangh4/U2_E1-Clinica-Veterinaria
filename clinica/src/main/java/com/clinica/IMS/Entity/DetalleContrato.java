@@ -1,7 +1,9 @@
 package com.clinica.IMS.Entity;
 
 import java.math.BigDecimal;
-
+/**
+ * @author Miguel Ángel
+ */
 public class DetalleContrato {
 	private int idContrato;
 	private BigDecimal salarioBase;

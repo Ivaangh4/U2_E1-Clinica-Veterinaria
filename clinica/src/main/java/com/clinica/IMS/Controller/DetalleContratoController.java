@@ -34,5 +34,5 @@ public class DetalleContratoController {
 
 	public boolean eliminarContrato(int id) {
 		return detalleContratoService.eliminarContrato(id);
-	}
+	} //sdfsfd
 }

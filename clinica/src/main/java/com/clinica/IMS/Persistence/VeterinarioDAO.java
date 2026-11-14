@@ -42,7 +42,7 @@ public class VeterinarioDAO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public boolean insertarVeterinarioConContrato(Veterinario vetOriginal, DetalleContrato contratoOriginal) {
+	public boolean insertarVeterinario(Veterinario vetOriginal) {
 		boolean insertado = false;
 		try {
 			connection.setAutoCommit(false);

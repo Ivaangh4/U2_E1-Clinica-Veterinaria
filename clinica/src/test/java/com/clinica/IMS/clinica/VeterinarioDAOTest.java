@@ -73,7 +73,7 @@ public class VeterinarioDAOTest {
         vetOriginal = new Veterinario("VET-001", "Laura", "Gómez", Date.valueOf("2026-11-06"));
         contratoOriginal = new DetalleContrato(0, new BigDecimal("2500.00"), 40, "VET-001");
 
-        fueInsertado = dao.insertarVeterinarioConContrato(vetOriginal, contratoOriginal);
+        fueInsertado = dao.insertarVeterinario(vetOriginal);
         vetRecuperado = dao.obtenerVeterinarioPorLicencia("VET-001");
         contratoRecuperado = dao.obtenerContratoPorLicencia("VET-001");
         salarioEsperado = new BigDecimal("2500.00");
@@ -95,7 +95,7 @@ public class VeterinarioDAOTest {
         vetOriginal = new Veterinario("VET-002", "Carlos", "Ruiz", Date.valueOf("2026-11-06"));
         contratoInvalido = new DetalleContrato(0, null, 40, "VET-002");
 
-        fueInsertado = dao.insertarVeterinarioConContrato(vetOriginal, contratoInvalido);
+        fueInsertado = dao.insertarVeterinario(vetOriginal);
         vetRecuperado = dao.obtenerVeterinarioPorLicencia("VET-002");
 
         assertFalse(fueInsertado);
@@ -114,7 +114,7 @@ public class VeterinarioDAOTest {
 
         vetOriginal = new Veterinario("VET-003", "Ana", "Martínez", Date.valueOf("2026-11-06"));
         contratoOriginal = new DetalleContrato(0, new BigDecimal("2800.00"), 35, "VET-003");
-        dao.insertarVeterinarioConContrato(vetOriginal, contratoOriginal);
+        dao.insertarVeterinario(vetOriginal);
 
         cert1 = new Certificacion(0, "UCM", "Cirugía Felina", "VET-003");
         cert2 = new Certificacion(0, "UAB", "Dermatología Canina", "VET-003");
@@ -141,7 +141,7 @@ public class VeterinarioDAOTest {
 		vetOriginal = new Veterinario("VET-004", "Jose", "Hernandez", Date.valueOf("2026-11-06"));
 		contratoOriginal = new DetalleContrato(0, new BigDecimal("2100.00"), 30, "VET-004");
 		
-		dao.insertarVeterinarioConContrato(vetOriginal, contratoOriginal);
+		dao.insertarVeterinario(vetOriginal);
 		
 		nuevoSalario = new BigDecimal("2950.00");
 		
